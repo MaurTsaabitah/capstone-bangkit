@@ -1,5 +1,7 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 import { userValidationLogin, userValidationRegister } from "../validations/userValidation.js";
 
 // REGISTER
@@ -17,6 +19,10 @@ export const createUser = async (req, res) => {
         } = req.body;
 
         const { error, value } = userValidationRegister.validate(req.body);
+
+        const doesExist = await User.findOne({ username: value.username });
+
+        if (doesExist) return res.status(400).json({ message: `${username} is already been registered` });
 
         if (error) return res.status(400).json({error: error.details[0].message});
 
@@ -55,10 +61,16 @@ export const loginUser = async (req, res) => {
 
         if (!isPasswordMatch) return res.status(401).json({message: "Wrong email and password"});
 
+        const token = jwt.sign({
+            id: user._id,
+            username: user.username
+        }, process.env.TOKEN, { expiresIn: 60 * 60 * 3 });
+
         res.status(200).json({
             message: "successful login", 
-            data: user
-        })
+            data: user,
+            token
+        });
     } catch (error) {
        res.status(500).json({message: error.message});
     }

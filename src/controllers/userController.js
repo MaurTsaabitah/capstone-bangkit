@@ -1,17 +1,26 @@
 import User from "../models/userModel.js";
-import bcrypt from "bcrypt";
 
+export const getUserByID = async (req, res) => {
+    const { username } = req.params
 
-const createUser = async (req, res) => {
-    const { username, 
-            email, 
-            password, 
-            full_name, 
-            date_of_birth,
-            profile_image,
-            education } = req.body
+    try {
+        const user = await User.findOne({ username });
+        
+        if (!user) {
+            return res.status(404).json({ 
+                status: "error",
+                message: "user not found"
+             });
+        }
 
-    const hashPassword = await bcrypt.hash(password, 10);
+        res.status(200).json({
+            status: "success",
+            data: user 
+        })
 
-    const newUser = new User({ username, email, password: hashPassword, full_name, date_of_birth, profile_image, education })
+    } catch (error) {
+        res.status(500).json({ 
+            status: "error", 
+            message: error.message });
+    }
 }
