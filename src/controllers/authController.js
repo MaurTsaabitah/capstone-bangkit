@@ -90,14 +90,14 @@ export const loginUser = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
     const { refreshToken } = req.cookies;
-    
-    if (!refreshToken) return res.sendStatus(204);
 
-    const user = await User.findOne({refresh_token: refreshToken});
+    if (!refreshToken) return res.status(401).json({message: "Refresh token not provided"});
 
-    if (!user) return res.status(204).json({message: "Not match"});
-    
-    await User.findByIdAndUpdate(user._id, {$set: {refresh_token: null}});
     res.clearCookie('refreshToken');
-    return res.sendStatus(200);
+
+    await User.updateOne({ refresh_token: refreshToken }, { $set: { refresh_token: null } });
+
+    await User.updateOne({ access_token: req.header('Authorization') }, { $set: { access_token: null } })
+
+    return res.json({ message: 'Logout successful' });
 }

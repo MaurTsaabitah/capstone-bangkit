@@ -5,11 +5,11 @@ export const refreshToken = async (req, res) => {
     try {
         const { refreshToken } = req.cookies;
         
-        if (!refreshToken) return res.status(401).json({message: "You are not authenticated"});
+        if (!refreshToken) return res.status(401).json({message: 'Refresh token not provided'});
         
         const user = await User.findOne({refresh_token: refreshToken});
         
-        if(!user) return res.status(403).json({message: "You are not allowed"});
+        if(!user) return res.status(401).json({message: "Invalid or expired refresh token"});
 
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decode) => {
             if (err) return res.status(403).json({message: "You are not allowed"});
