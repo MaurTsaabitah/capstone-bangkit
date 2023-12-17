@@ -45,7 +45,8 @@ const userSchema = new mongoose.Schema({
     },
     education: {
         type: String
-    }
+    },
+    refresh_token: String
 }, { timestamps: true });
 
 const User = mongoose.model("User", userSchema);

@@ -1,5 +1,7 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 import { userValidationLogin, userValidationRegister } from "../validations/userValidation.js";
 
 // REGISTER
@@ -18,6 +20,10 @@ export const createUser = async (req, res) => {
 
         const { error, value } = userValidationRegister.validate(req.body);
 
+        const doesExist = await User.findOne({ username: value.username });
+
+        if (doesExist) return res.status(400).json({ message: `${username} is already been registered` });
+
         if (error) return res.status(400).json({error: error.details[0].message});
 
         // Hash Password
@@ -29,12 +35,12 @@ export const createUser = async (req, res) => {
 
         res.status(201).json({
             success: true,
-            message: "Register user success",
+            message: "Register success",
         })
     } catch (error) {
         res.status(400).json({
             success: false, 
-            message: "Register user fail"
+            message: "Register fail"
         })
     }    
 }
@@ -55,11 +61,43 @@ export const loginUser = async (req, res) => {
 
         if (!isPasswordMatch) return res.status(401).json({message: "Wrong email and password"});
 
+        const accessToken = jwt.sign({
+            id: user._id,
+            username: user.username 
+        }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
+
+        const refreshToken = jwt.sign({
+            id: user._id,
+            username: user.username
+        }, process.env.REFRESH_TOKEN_SECRET, {expiresIn: "3d"});
+
+        user.refresh_token = refreshToken;
+        await user.save();
+
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000
+        });
+
         res.status(200).json({
             message: "successful login", 
-            data: user
-        })
+            accessToken
+        });
     } catch (error) {
        res.status(500).json({message: error.message});
     }
+}
+
+export const logoutUser = async (req, res) => {
+    const { refreshToken } = req.cookies;
+
+    if (!refreshToken) return res.status(401).json({message: "Refresh token not provided"});
+
+    res.clearCookie('refreshToken');
+
+    await User.updateOne({ refresh_token: refreshToken }, { $set: { refresh_token: null } });
+
+    await User.updateOne({ access_token: req.header('Authorization') }, { $set: { access_token: null } })
+
+    return res.json({ message: 'Logout successful' });
 }
