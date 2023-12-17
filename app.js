@@ -3,6 +3,7 @@ import connectDB from "./src/config/db.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import loggingMiddleware from "./src/middleware/logging.js";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import "dotenv/config";
 
@@ -12,7 +13,8 @@ connectDB();
 
 app.use(loggingMiddleware);
 app.use(express.json());
-app.use(cors());
+app.use(cors({ credentials: true }));
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true} ));
 
 app.use('/api/auth', authRoutes);
