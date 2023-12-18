@@ -46,6 +46,10 @@ const userSchema = new mongoose.Schema({
     education: {
         type: String
     },
+    selectedJob: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Job' 
+    },
     refresh_token: String
 }, { timestamps: true });
 

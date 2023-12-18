@@ -17,6 +17,6 @@ const answerSchema = new mongoose.Schema({
     }
 });
 
-const AnswerModel = mongoose.model('Answer', answerSchema);
+const Answer = mongoose.model('Answer', answerSchema);
 
-export default AnswerModel;
+export default Answer;
