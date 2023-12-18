@@ -93,11 +93,9 @@ export const logoutUser = async (req, res) => {
 
     if (!refreshToken) return res.status(401).json({message: "Refresh token not provided"});
 
-    res.clearCookie('refreshToken');
-
     await User.updateOne({ refresh_token: refreshToken }, { $set: { refresh_token: null } });
-
-    await User.updateOne({ access_token: req.header('Authorization') }, { $set: { access_token: null } })
+        
+    res.clearCookie('refreshToken');
 
     return res.json({ message: 'Logout successful' });
 }
