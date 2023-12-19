@@ -2,6 +2,7 @@ import express from "express";
 import connectDB from "./src/config/db.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
+import questionRoutes from "./src/routes/questionRoutes.js";
 import loggingMiddleware from "./src/middleware/logging.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true} ));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/questions/', questionRoutes);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
