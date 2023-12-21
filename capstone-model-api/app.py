@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import tensorflow as tf
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import Tokenizer
@@ -8,7 +9,9 @@ import pickle
 import json
 import numpy as np
 
+
 app = Flask(__name__)
+CORS(app)
 
 # Load pre-trained model
 model = load_model("my_model.h5")
