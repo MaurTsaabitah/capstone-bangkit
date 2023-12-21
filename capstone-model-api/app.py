@@ -67,10 +67,19 @@ def predict():
     try:
         # Make prediction
         predicted_category = predict_category_for_skills(model, tokenizer, skills_to_predict)
-
+            
         # Return the prediction as JSON with a success status code
-        return jsonify({'predicted_category': predicted_category}), 200
-
+        return jsonify({
+            "status": {
+                "code": 200,
+                "message": "Sukses Memprediksi Kategori Pekerjaan",
+            },
+            "data": {
+                "selected_skills": skills_to_predict,
+                "predictect_category": predicted_category
+            }
+                }),200
+            
     except Exception as e:
         # Return an error message and status code 500 for internal server error
         return jsonify({'error': f'Internal server error: {str(e)}'}), 500
