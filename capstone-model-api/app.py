@@ -10,7 +10,7 @@ import numpy as np
 
 app = Flask(__name__)
 
-# Load your pre-trained model, tokenizer, and label_encoder here
+# Load pre-trained model
 model = load_model("my_model.h5")
 
 # Load tokenizer using Pickle
@@ -59,8 +59,6 @@ def predict_category_for_skills(model, tokenizer, skills):
 def predict():
 
     data = request.get_json()
-    
-    # Assuming the input JSON has a key named 'skills'
     skills_to_predict = data.get('skills', '')
 
     if not skills_to_predict:
