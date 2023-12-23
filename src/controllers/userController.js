@@ -24,7 +24,7 @@ export const getUserByID = async (req, res) => {
             status: "success",
             message: "User fetched successfully",
             data: user 
-        })
+        });
 
     } catch (error) {
         res.status(500).json({ 
