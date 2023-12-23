@@ -22,7 +22,7 @@ export const createUser = async (req, res) => {
 
         const doesExist = await User.findOne({ username: value.username });
 
-        if (doesExist) return res.status(400).json({ message: `${username} is already been registered` });
+        if (doesExist) return res.status(400).json({ message: `${username} sudah ada` });
 
         if (error) return res.status(400).json({error: error.details[0].message});
 
@@ -34,14 +34,18 @@ export const createUser = async (req, res) => {
         const data = await newUser.save();
 
         res.status(201).json({
-            success: true,
-            message: "Register success",
+            status: "success",
+            message: "User registered successfully",
+            data
         })
     } catch (error) {
-        res.status(400).json({
-            success: false, 
-            message: "Register fail"
-        })
+        res.status(500).json({
+            status: "error", 
+            message: "Server error occurred", 
+            error: {
+                description: "An internal error occurred on the server"
+            }
+        });
     }    
 }
 
@@ -55,11 +59,11 @@ export const loginUser = async (req, res) => {
 
         const user = await User.findOne({ username });
 
-        if (!user) return res.status(401).json({message: "Wrong email and password"});
+        if (!user) return res.status(401).json({message: "email dan password salah"});
 
         const isPasswordMatch = await bcrypt.compare(password, user.password);
 
-        if (!isPasswordMatch) return res.status(401).json({message: "Wrong email and password"});
+        if (!isPasswordMatch) return res.status(401).json({message: "email dan password salah"});
 
         const accessToken = jwt.sign({
             id: user._id,
@@ -80,11 +84,18 @@ export const loginUser = async (req, res) => {
         });
 
         res.status(200).json({
-            message: "successful login", 
-            accessToken
+            status: "success",
+            message: "Login successful", 
+            token: accessToken
         });
     } catch (error) {
-       res.status(500).json({message: error.message});
+       res.status(500).json({
+            status: "error", 
+            message: "Server error occurred", 
+            error: {
+                description: "An internal error occurred on the server"
+            }
+       });
     }
 }
 
@@ -97,5 +108,8 @@ export const logoutUser = async (req, res) => {
         
     res.clearCookie('refreshToken');
 
-    return res.json({ message: 'Logout successful' });
+    return res.json({ 
+        status: "success",
+        message: "Logout successful" 
+    });
 }

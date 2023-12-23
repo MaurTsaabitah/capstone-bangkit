@@ -1,18 +1,13 @@
 import mongoose from "mongoose";
 
-const jobSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
+const predictJobSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     },
-    skills: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Skill'
-        }
-    ]
+    predictedCategory: String 
 });
 
-const Job = mongoose.model('Job', jobSchema);
+const Job = mongoose.model('Job', predictJobSchema);
 
 export default Job;

@@ -4,7 +4,9 @@ import { verifyToken } from "../middleware/authVerifyToken.js";
 
 const router = Router();
 
-router.get('/:username', verifyToken, userController.getUserByID);
+router.get('/:username', userController.getUserByID);
+router.post('/', userController.addUserSkill);
+router.post('/:username/skill', userController.addUserSkill);
 router.put('/:id', userController.updateUser);
 
 

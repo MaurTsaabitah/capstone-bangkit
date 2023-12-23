@@ -25,7 +25,8 @@ const userSchema = new mongoose.Schema({
     },
     full_name: {
         type: String,
-        required: true
+        required: true,
+        minlength: [8, 'password must be at least 8 characters.']
     },   
     date_of_birth: {
         type: Date,
@@ -40,16 +41,7 @@ const userSchema = new mongoose.Schema({
             message: 'Format nomor telepon tidak valid',
           },
     },
-    profile_image: {
-        type: String
-    },
-    education: {
-        type: String
-    },
-    selectedJob: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Job' 
-    },
+    skill: { type: mongoose.Schema.Types.ObjectId, ref: 'Skill' },
     refresh_token: String
 }, { timestamps: true });
 

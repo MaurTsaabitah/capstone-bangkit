@@ -1,0 +1,551 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "GetMeCareer RESTful API",
+    "version": "1"
+  },
+  "servers": [
+    {
+      "description": "GetMeCareer RESTful API servers",
+      "url": "{environment}.localhost:3000/api",
+      "variables": {
+        "environment": {
+          "description": "Server Environment",
+          "default": "dev",
+          "enum": [
+            "dev", "qa", "prod"
+          ]
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/users/{userId}": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Get users by id",
+        "description": "Get all active users by default",
+        "parameters": [
+          {
+            "name": "include_done",
+            "in": "query",
+            "required": false,
+            "description": "Is include done user",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "description": "Is include done user",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success get all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "user@email.com"
+                    },
+                    "full_name": {
+                      "type": "string"
+                    },
+                    "date_of_birth": {
+                      "type": "integer",
+                      "example": "2003-05-05"
+                    },
+                    "phone_number": {
+                      "type": "string",
+                      "example": "08131513515"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "description": "success get user",
+                    "value": {
+                      "_id": "0959137598315",
+                      "username": "johndoe123",
+                      "password": "ijiwehfewf5&(*&#%",
+                      "email": "johndoe@email.com",
+                      "full_name": "John Doe",
+                      "date_of_birth": "2003-05-05",
+                      "phone_number": "08131513515"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["users"],
+        "summary": "Update existing user",
+        "description": "Update existing user in database",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "user id for update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "minLength": 8,
+                    "required": true
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 8,
+                    "required": true
+                  },
+                  "email": {
+                    "type": "string",
+                    "required": true,
+                    "example": "user@email.com"
+                  },
+                  "full_name": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "date_of_birth": {
+                    "type": "integer",
+                    "required": true,
+                    "default": "date_of_birth",
+                    "example": "2003-05-05"
+                  },
+                  "phone_number": {
+                    "type": "string",
+                    "required": true,
+                    "example": "0855159895125"
+                  }
+                }                
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success update user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "user@email.com"
+                    },
+                    "full_name": {
+                      "type": "string"
+                    },
+                    "date_of_birth": {
+                      "type": "integer",
+                      "example": "2003-05-05"
+                    },
+                    "phone_number": {
+                      "type": "string",
+                      "example": "08131513515"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "description": "success get user",
+                    "value": {
+                      "_id": "0959137598315",
+                      "username": "johndoe123",
+                      "password": "ijiwehfewf5&(*&#%",
+                      "email": "johndoe@email.com",
+                      "full_name": "John Doe",
+                      "date_of_birth": "2003-05-05",
+                      "phone_number": "08131513515"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["users"],
+        "summary": "Delete existing user",
+        "description": "Delete existing user in database",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "user id for delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success delete user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "description": "Success delete user",
+                    "value": {
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "failed delete not found user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "examples": {
+                  "failed": {
+                    "description": "failed delete user",
+                    "value": {
+                      "success": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Register user",
+        "description": "Create user to database",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "minLength": 8,
+                    "required": true
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 8,
+                    "required": true
+                  },
+                  "email": {
+                    "type": "string",
+                    "required": true,
+                    "example": "user@email.com"
+                  },
+                  "full_name": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "date_of_birth": {
+                    "type": "integer",
+                    "required": true,
+                    "default": "date_of_birth",
+                    "example": "2003-05-05"
+                  },
+                  "phone_number": {
+                    "type": "string",
+                    "required": true,
+                    "example": "0855159895125"
+                  }
+                }                
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success register user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "message": "Register berhasil"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Login user",
+        "description": "Create user to database",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "minLength": 8,
+                    "required": true
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 8,
+                    "required": true
+                  } 
+                }                
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success login user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "message": "Login berhasil"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "failed login user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "failed": {
+                    "value": {
+                      "message": "username atau password salah"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/skills": {
+      "get": {
+        "tags": ["skills"],
+        "summary": "get Skills",
+        "description": "Get all skills",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "minLength": 8,
+                    "required": true
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 8,
+                    "required": true
+                  } 
+                }                
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success login user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "message": "Login berhasil"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "failed login user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "failed": {
+                    "value": {
+                      "message": "username atau password salah"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }, 
+    "/predict": {
+      "post": {
+        "tags": ["predict"],
+        "summary": "Predict Career user",
+        "description": "Predict Career User",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "skills": {
+                    "type": "string",
+                    "required": true
+                  }
+                }                
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success register user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "skills": {
+                      "type": "string", 
+                      "example": "Ability to create effective data visualizations"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {               
+                      "data": {
+                        "predictect_category": "Science",
+                        "selected_skills": "Data Visualization"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
