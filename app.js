@@ -8,7 +8,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import "dotenv/config";
 import { verifyToken } from "./src/middleware/authVerifyToken.js";
-import  predictCareer from "./src/routes/predictRoutes.js";
+import  recommendationRoutes from "./src/routes/recommendationRoutes.js";
 
 const app = express();
 
@@ -31,7 +31,7 @@ app.use(function (req, res, next) {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/skills', skillRoutes);
-app.use('/api/predict', predictCareer);
+app.use('/api/predict', recommendationRoutes);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
