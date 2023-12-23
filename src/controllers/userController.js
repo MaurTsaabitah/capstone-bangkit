@@ -107,3 +107,33 @@ export const addUserSkill = async (req, res) => {
         });
     }
 }
+
+export const deleteUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findByIdAndDelete({_id: id});
+
+        if (!user) return res.status(404).json({
+            status: "error",
+            message: "Error fetching user",
+            error: {
+                description: "User not found"
+            }
+        });
+
+        res.json({
+            status: "success",
+            message: "User delete successfully",
+            data: user
+        });
+    
+    } catch (error) {
+        res.status(500).json({ 
+            status: "error", 
+            message: "Server error occurred", 
+            error: {
+                description: "An internal error occurred on the server"
+            } 
+        });
+    }
+}

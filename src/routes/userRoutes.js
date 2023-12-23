@@ -8,6 +8,7 @@ router.get('/:username', userController.getUserByID);
 router.post('/', userController.addUserSkill);
 router.post('/:username/skill', userController.addUserSkill);
 router.put('/:id', userController.updateUser);
+router.delete('/:id', userController.deleteUserById);
 
 
 export default router

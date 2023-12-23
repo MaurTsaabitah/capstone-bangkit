@@ -77,7 +77,7 @@ export const getRecommendationControllerById = async (req, res) => {
         status: "success",
         message: "Recommendation user fetched successfully",
         data: recommendation
-    })
+    });
 
     } catch (error) {
         res.status(500).json({ 
@@ -88,5 +88,47 @@ export const getRecommendationControllerById = async (req, res) => {
             } 
         });
     }
+}
 
+export const deleteRecommendationController = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const user = await User.findById(id);
+
+        if (!user) return res.status(404).json({
+            status: "error",
+            message: "Error fetching user",
+            error: {
+                description: "User not found"
+            }
+        });
+
+        const recommendation = await Recommendation.findOne({userId: id});
+
+        if (!recommendation) return res.status(404).json({
+            status: "error",
+            message: "Error fetching recommendation",
+            error: {
+                description: "recommendation user not found"
+            }
+        });
+
+        await recommendation.deleteOne({userId: id});
+
+        res.json({
+            status: "success",
+            message: "Recommendation user delete successfully",
+            data: recommendation
+        });
+    
+    } catch (error) {
+        res.status(500).json({ 
+            status: "error", 
+            message: "Server error occurred", 
+            error: {
+                description: "An internal error occurred on the server"
+            } 
+        });
+    }
 }
