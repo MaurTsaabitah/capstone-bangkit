@@ -29,8 +29,9 @@ app.use(function (req, res, next) {
 });
 
 app.use('/api/auth', authRoutes);
+app.use(verifyToken);
 app.use('/api/users', userRoutes);
-app.use('/api/skills', skillRoutes);
+app.use('/api/skill', skillRoutes);
 app.use('/api/predict', recommendationRoutes);
 
 const port = process.env.PORT || 3000;

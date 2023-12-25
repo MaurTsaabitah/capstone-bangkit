@@ -3,12 +3,12 @@ import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 
 export const getUserByID = async (req, res) => {
-    const { username } = req.params;
+    const { id } = req.params;
 
-    // if (username !== req.user.username) return res.sendStatus(403);
+    if (id !== req.user.id) return res.sendStatus(403);
 
     try {
-        const user = await User.findOne({ username });
+        const user = await User.findById(id);
         
         if (!user) {
             return res.status(404).json({ 
@@ -77,11 +77,13 @@ export const updateUser = async (req, res) => {
 export const addUserSkill = async (req, res) => {
     try {
        
-        const { username } = req.params
+        const { id } = req.params
         const {skill} = req.body;
-        const user = await User.findOne({username});
+        const user = await User.findById(id);
         const skillObj = await Skill.findOne({name: skill});
-        
+
+        if (id !== req.user.id) return res.sendStatus(403);
+     
         if (!user) return res.status(404).json({message: "user tidak ditemukan"});
         if (!skillObj) return res.status(404).json({message: "skill tidak ditemukan"});
 

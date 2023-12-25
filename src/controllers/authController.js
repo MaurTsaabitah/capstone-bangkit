@@ -22,7 +22,7 @@ export const createUser = async (req, res) => {
 
         const doesExist = await User.findOne({ username: value.username });
 
-        if (doesExist) return res.status(400).json({ message: `${username} sudah ada` });
+        if (doesExist) return res.status(400).json({ message: `${username} is exist` });
 
         if (error) return res.status(400).json({error: error.details[0].message});
 
@@ -85,8 +85,9 @@ export const loginUser = async (req, res) => {
 
         res.status(200).json({
             status: "success",
-            message: "Login successful", 
-            token: accessToken
+            message: "Login successful",
+            data: user,
+            access_token: accessToken
         });
     } catch (error) {
        res.status(500).json({
