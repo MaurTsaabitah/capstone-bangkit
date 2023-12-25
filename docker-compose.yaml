@@ -1,0 +1,13 @@
+version: '3'
+services:
+  myapp:
+    build: .
+    image: backend-api:v1
+    command: npm start
+    ports:
+      - "3001:3001"
+    environment:
+      - DB_CONNECT = mongodb+srv://root:operator1234@career-recommendation.131ff.mongodb.net/?retryWrites=true&w=majority
+      - ACCESS_TOKEN_SECRET = fnudsf&*!^^I*nianiry4r32894732rnufui&*@$&^@&$@JICNOmkdfmowaeinfionoih231246124
+      - REFRESH_TOKEN_SECRET = infoienifenrif*&*%@&%*&!FNINFIONQOIFfkweafonwefnifbiw4124215161iwefn
+      - PORT=3000
